@@ -4,10 +4,13 @@ var irmaoDoDinossauronaBlackFriday;
 var asfaltoquenaoeasfalto;
 var irmaodoasfalto;
 var aviaodamulhermaravilha;
+var algodaodoce;
+var eupensaqueanuvemeraalgodaodoce;
 
 //arquivos
 function preload(){
 irmaoDoDinossauronaBlackFriday = loadAnimation("trex1.png","trex3.png","trex4.png");  
+eupensaqueanuvemeraalgodaodoce = loadImage ("cloud.png");
 irmaodoasfalto = loadImage ("ground.png");
 }
 
@@ -33,10 +36,15 @@ dinossauroCorrendoNaBlackFriday.scale = 0.5;
 
 //bordas
 borda = createEdgeSprites();
+
+//número aleatório
+var aleatorio = Math.round(random(1,100));
+console.log(aleatorio);
 }
+
 //desenho
 function draw(){
-console.log (dinossauroCorrendoNaBlackFriday.y);
+//console.log (dinossauroCorrendoNaBlackFriday.y);
 
 //cor de fundo
 background("white");
@@ -58,4 +66,19 @@ dinossauroCorrendoNaBlackFriday.collide(aviaodamulhermaravilha);
 
 //Desenha todos os sprites
 drawSprites();
+
+//Chamar a função que vai criar as nuvens
+oporcovoltou();
+}
+
+function oporcovoltou(){
+if(frameCount%60 === 0) {
+    algodaodoce = createSprite(600,100,40,10);
+    algodaodoce.velocityX = -3;
+    algodaodoce.addImage (eupensaqueanuvemeraalgodaodoce);
+    algodaodoce.y = Math.round(random(10,100));
+    algodaodoce.depth = dinossauroCorrendoNaBlackFriday.depth;
+    dinossauroCorrendoNaBlackFriday.depth +=1;
+}
+
 }
