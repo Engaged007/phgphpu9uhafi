@@ -13,6 +13,11 @@ var jorginho4;
 var jorginho5;
 var jorginho6;
 var PONTOSSSS;
+var lanhouse;
+var viajandonamaionese;
+var correnegada = 1;
+var morreumorreu = 0;
+var estado = correnegada;
 //arquivos
 function preload(){
 irmaoDoDinossauronaBlackFriday = loadAnimation("trex1.png","trex3.png","trex4.png");  
@@ -55,28 +60,43 @@ borda = createEdgeSprites();
 //número aleatório
 var aleatorio = Math.round(random(1,100));
 console.log(aleatorio);
+
+//criando os grupos de sprites
+lanhouse = new Group();
+viajandonamaionese = new Group();
 }
 
 //desenho
 function draw(){
 //console.log (dinossauroCorrendoNaBlackFriday.y);
 
-
 //cor de fundo
 background("white");
-asfaltoquenaoeasfalto.velocityX = -2;
+
+if(estado === correnegada){
+ asfaltoquenaoeasfalto.velocityX = -2;
 if(asfaltoquenaoeasfalto.x<0) {
-asfaltoquenaoeasfalto.x = asfaltoquenaoeasfalto.width/2;
-}
-
-//tecla de espaço
+ asfaltoquenaoeasfalto.x = asfaltoquenaoeasfalto.width/2;
+ }
+ //tecla de espaço
 if(keyDown("space")&&dinossauroCorrendoNaBlackFriday.y>=150){
-dinossauroCorrendoNaBlackFriday.velocityY = -12;
-}
-
-//gravidade
+ dinossauroCorrendoNaBlackFriday.velocityY = -12;
+ }
+ //gravidade
 dinossauroCorrendoNaBlackFriday.velocityY += 1;
+//Chamar a função que vai criar as nuvens
+oporcovoltou();
 
+//Chamar a função que vai criar os cactos
+jorge();
+if(viajandonamaionese.isTouching(dinossauroCorrendoNaBlackFriday)) {
+estado = morreumorreu
+}
+} else if(estado === morreumorreu){
+asfaltoquenaoeasfalto.velocityX = 0;
+lanhouse.setVelocityXEach(0);
+viajandonamaionese.setVelocityXEach(0);
+}
 //dinossauro não cai da tela
 dinossauroCorrendoNaBlackFriday.collide(aviaodamulhermaravilha);
 
@@ -85,11 +105,7 @@ drawSprites();
 text(PONTOSSSS,500,50);
 PONTOSSSS+=Math.round(frameCount/60);
 
-//Chamar a função que vai criar as nuvens
-oporcovoltou();
 
-//Chamar a função que vai criar os cactos
-jorge();
 }
 
 function oporcovoltou(){
@@ -100,6 +116,8 @@ if(frameCount%60 === 0) {
     algodaodoce.y = Math.round(random(10,100));
     algodaodoce.depth = dinossauroCorrendoNaBlackFriday.depth;
     dinossauroCorrendoNaBlackFriday.depth +=1;
+    algodaodoce.lifetime = 300;
+    lanhouse.add(algodaodoce);
 }
 
 }
@@ -127,5 +145,7 @@ function jorge(){
         default: break;
     }
     jorginhos.scale = 0.5;
+    jorginhos.lifetime = 300;
+    viajandonamaionese.add(jorginhos);
    }
 }
