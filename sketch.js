@@ -18,9 +18,15 @@ var viajandonamaionese;
 var correnegada = 1;
 var morreumorreu = 0;
 var estado = correnegada;
+var dinossauronaoconseguiucomprarnaBF;
+var perdel;
+var perdeltrizte;
+var botau;
+var botauperdeltrizte;
 //arquivos
 function preload(){
-irmaoDoDinossauronaBlackFriday = loadAnimation("trex1.png","trex3.png","trex4.png");  
+irmaoDoDinossauronaBlackFriday = loadAnimation("trex1.png","trex3.png","trex4.png"); 
+dinossauronaoconseguiucomprarnaBF = loadAnimation("trex_collided.png");
 eupensaqueanuvemeraalgodaodoce = loadImage ("cloud.png");
 irmaodoasfalto = loadImage ("ground.png");
 jorginho1 = loadImage("obstacle1.png");
@@ -29,6 +35,8 @@ jorginho3 = loadImage("obstacle3.png");
 jorginho4 = loadImage("obstacle4.png");
 jorginho5 = loadImage("obstacle5.png");
 jorginho6 = loadImage("obstacle6.png");
+perdeltrizte = loadImage("gameOver.png");
+botauperdeltrizte = loadImage("restart.png");
 }
 
 //configuração
@@ -50,6 +58,7 @@ dinossauroCorrendoNaBlackFriday = createSprite(50,160,20,50);
 
 //animação ao dinossauro
 dinossauroCorrendoNaBlackFriday.addAnimation("correndo", irmaoDoDinossauronaBlackFriday);
+dinossauroCorrendoNaBlackFriday.addAnimation("trizte", dinossauronaoconseguiucomprarnaBF);
 
 //escala da variável
 dinossauroCorrendoNaBlackFriday.scale = 0.5;
@@ -64,6 +73,17 @@ console.log(aleatorio);
 //criando os grupos de sprites
 lanhouse = new Group();
 viajandonamaionese = new Group();
+
+//Verificando a colisão do dino
+dinossauroCorrendoNaBlackFriday.debug = false;
+dinossauroCorrendoNaBlackFriday.setCollider("circle", 0, 0, 56);
+//gamerover
+perdel = createSprite(300,100);
+perdel.addImage(perdeltrizte);
+//restart
+botau = createSprite(300,140);
+botau.addImage(botauperdeltrizte);
+botau.scale = 0.5;
 }
 
 //desenho
@@ -74,6 +94,9 @@ function draw(){
 background("white");
 
 if(estado === correnegada){
+ perdel.visible = false;
+ botau.visible = false;
+ PONTOSSSS+=Math.round(frameCount/60);
  asfaltoquenaoeasfalto.velocityX = -2;
 if(asfaltoquenaoeasfalto.x<0) {
  asfaltoquenaoeasfalto.x = asfaltoquenaoeasfalto.width/2;
@@ -93,9 +116,16 @@ if(viajandonamaionese.isTouching(dinossauroCorrendoNaBlackFriday)) {
 estado = morreumorreu
 }
 } else if(estado === morreumorreu){
+perdel.visible = true;
+botau.visible = true;
+dinossauroCorrendoNaBlackFriday.changeAnimation("trizte");
 asfaltoquenaoeasfalto.velocityX = 0;
 lanhouse.setVelocityXEach(0);
 viajandonamaionese.setVelocityXEach(0);
+lanhouse.setLifetimeEach(-666);
+viajandonamaionese.setLifetimeEach(-666);
+dinossauroCorrendoNaBlackFriday.velocityX = -1;
+dinossauroCorrendoNaBlackFriday.velocityY = 0;
 }
 //dinossauro não cai da tela
 dinossauroCorrendoNaBlackFriday.collide(aviaodamulhermaravilha);
@@ -103,7 +133,7 @@ dinossauroCorrendoNaBlackFriday.collide(aviaodamulhermaravilha);
 //Desenha todos os sprites
 drawSprites();
 text(PONTOSSSS,500,50);
-PONTOSSSS+=Math.round(frameCount/60);
+
 
 
 }
@@ -146,6 +176,8 @@ function jorge(){
     }
     jorginhos.scale = 0.5;
     jorginhos.lifetime = 300;
+    jorginhos.depth = dinossauroCorrendoNaBlackFriday.depth;
+    dinossauroCorrendoNaBlackFriday.depth +=1;
     viajandonamaionese.add(jorginhos);
    }
 }
